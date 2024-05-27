@@ -63,29 +63,6 @@ namespace DemoECommercePrj.Controllers
         }
 
         /// <summary>
-        /// Lấy 1 category theo tên truyền vào
-        /// </summary>
-        /// <param name="name"></param>
-        /// <returns></returns>
-        [HttpGet("{name}")]
-        public async Task<IActionResult> GetCategoryByName(string name)
-        {
-            try
-            {
-                var category = await _categoryRepository.GetCategoryByNameAsync(name);
-                if (category == null)
-                {
-                    return NotFound();
-                }
-                return Ok(category);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-
-        /// <summary>
         /// Thêm 1 category vào danh sách
         /// </summary>
         /// <param name="categoryVM"></param>

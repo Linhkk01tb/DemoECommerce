@@ -60,11 +60,5 @@ namespace DemoECommercePrj.Services
             var categoryById = await _context.Categories!.FindAsync(id);
             return _mapper.Map<CategoryDTO>(categoryById);
         }
-
-        public async Task<CategoryDTO> GetCategoryByNameAsync(string name)
-        {
-            var categoryByName = await _context.Categories!.FindAsync(name);
-            return _mapper.Map<CategoryDTO>(categoryByName);
-        }
     }
 }

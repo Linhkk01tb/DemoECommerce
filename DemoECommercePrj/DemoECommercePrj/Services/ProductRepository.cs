@@ -59,11 +59,5 @@ namespace DemoECommercePrj.Services
             var productById = await _context.Products!.FindAsync(id);
             return _mapper.Map<ProductDTO>(productById);
         }
-
-        public async Task<ProductDTO> GetProductByNameAsync(string name)
-        {
-            var productByName = await _context.Products!.FindAsync(name);
-            return _mapper.Map<ProductDTO>(productByName);
-        }
     }
 }

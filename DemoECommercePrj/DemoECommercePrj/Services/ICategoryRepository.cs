@@ -9,8 +9,6 @@ namespace DemoECommercePrj.Services
 
         public Task<CategoryDTO> GetCategoryByIdAsync(int id);
 
-        public Task<CategoryDTO> GetCategoryByNameAsync(string name);
-
         public Task<int> AddCategoryAsync(CategoryDTO category);
 
         public Task EditCategoryAsync(CategoryDTO category, int id);

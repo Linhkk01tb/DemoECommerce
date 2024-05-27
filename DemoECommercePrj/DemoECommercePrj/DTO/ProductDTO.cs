@@ -27,7 +27,7 @@ namespace DemoECommercePrj.DTO
         /// <summary>
         /// Mô tả sản phẩm
         /// </summary>
-        public string ProductDescription { get; set; }
+        public string? ProductDescription { get; set; }
 
         public int CategoryId { get; set; }
     }

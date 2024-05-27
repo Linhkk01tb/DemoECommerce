@@ -51,23 +51,7 @@ namespace DemoECommercePrj.Controllers
                 return BadRequest(ex.Message);
             }
         }
-        [HttpGet("{name}")]
-        public async Task<IActionResult> GetProductByName(string name)
-        {
-            try
-            {
-                var productByName = await _productRepository.GetProductByNameAsync(name);
-                if (productByName == null)
-                {
-                    return NotFound();
-                }
-                return Ok(productByName);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
+
 
         [HttpPost]
         public async Task<IActionResult> AddProduct(ProductDTO productDTO)
@@ -81,6 +65,34 @@ namespace DemoECommercePrj.Controllers
                     Success = true,
                     productById
                 });
+            }
+            catch
+            {
+                return BadRequest();
+            }
+        }
+        [HttpPut("{id}")]
+
+        public async Task<IActionResult> EditProduct(Guid id, ProductDTO productDTO)
+        {
+            try
+            {
+                await _productRepository.EditProductAsync(id, productDTO);
+                return NoContent();
+            }
+            catch
+            {
+                return BadRequest();
+            }
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteProduct(Guid id)
+        {
+            try
+            {
+                await _productRepository.DeleteProductAsync(id);
+                return Ok();
             }
             catch
             {
