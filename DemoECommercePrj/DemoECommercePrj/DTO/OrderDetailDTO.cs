@@ -1,6 +1,8 @@
-﻿namespace DemoECommercePrj.Models
+﻿using DemoECommercePrj.Models;
+
+namespace DemoECommercePrj.DTO
 {
-    public class OrderDetail : CommonDate
+    public class OrderDetailDTO : CommonDate
     {
         /// <summary>
         /// Mã đơn hàng
@@ -20,18 +22,7 @@
         /// <summary>
         /// Đơn giá sản phẩm
         /// </summary>
-        public double ProductPrice {  get; set; }
+        public double ProductPrice { get; set; }
 
-        /// <summary>
-        /// Method Thành tiền
-        /// </summary>
-        public double TotalPayment() => ProductPrice * BuyQuantity;
-
-
-        #region Relationship with Product and Order
-        public Product Product { get; set; }
-
-        public Order Order { get; set; }
-        #endregion
     }
 }

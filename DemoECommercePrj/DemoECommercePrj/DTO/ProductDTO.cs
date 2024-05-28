@@ -7,7 +7,7 @@ namespace DemoECommercePrj.DTO
         /// <summary>
         /// Mã sản phẩm
         /// </summary>
-        public Guid ProductId { get; set; }
+        public Guid ProductId { get; set; } = Guid.NewGuid();
 
         /// <summary>
         /// Tên sản phẩm
@@ -30,5 +30,7 @@ namespace DemoECommercePrj.DTO
         public string? ProductDescription { get; set; }
 
         public int CategoryId { get; set; }
+
+        public int BrandId { get; set; }
     }
 }

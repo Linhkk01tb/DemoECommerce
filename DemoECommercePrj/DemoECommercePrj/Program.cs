@@ -1,5 +1,6 @@
 using DemoECommercePrj.Data;
 using DemoECommercePrj.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,7 +16,19 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddCors(options =>
     options.AddDefaultPolicy(policy =>
         policy.AllowAnyHeader().AllowAnyOrigin().AllowAnyMethod()));
-builder.Services.AddAuthentication();
+
+//Register Authentication
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(options =>
+{
+    options.SaveToken = true;
+    options.RequireHttpsMetadata = false;
+    //options.TokenValidationParameters = true;
+});
 
 //Register DbContext
 builder.Services.AddDbContext<DemoEcommerceDbContext>(option =>
@@ -25,9 +38,11 @@ builder.Services.AddDbContext<DemoEcommerceDbContext>(option =>
 
 //Register AutoMapper
 builder.Services.AddAutoMapper(typeof(Program));
+
 //Register Services
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<IBrandRepository, BrandRepository>();
 
 
 var app = builder.Build();

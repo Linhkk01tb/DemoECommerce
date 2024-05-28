@@ -32,15 +32,19 @@
         public Category Category { get; set; }
         #endregion
 
+        #region Relationship with Brand
+        public int BrandId { get; set; }
+        public Brand Brand { get; set; }
+        #endregion
         /// <summary>
         /// Quan hệ 1-N giữa Product và OrderDetail
         /// </summary>
-        //public ICollection<OrderDetail> OrderDetails { get; set; }
+        public ICollection<OrderDetail> OrderDetails { get; set; }
 
 
-        //public Product()
-        //{
-        //    OrderDetails = new HashSet<OrderDetail>();
-        //}
+        public Product()
+        {
+            OrderDetails = new HashSet<OrderDetail>();
+        }
     }
 }

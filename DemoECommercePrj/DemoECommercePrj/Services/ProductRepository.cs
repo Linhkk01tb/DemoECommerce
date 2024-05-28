@@ -20,7 +20,7 @@ namespace DemoECommercePrj.Services
         {
             var newProduct = _mapper.Map<Product>(productDTO);
             newProduct.CreatedDate = DateTime.Now;
-            newProduct.ModifiedDate =  DateTime.Now;
+            newProduct.ModifiedDate = DateTime.Now;
             _context.Products.Add(newProduct);
             await _context.SaveChangesAsync();
             return newProduct.ProductId;

@@ -39,7 +39,7 @@ namespace DemoECommercePrj.Services
 
         public async Task EditCategoryAsync(CategoryDTO category, int id)
         {
-            if(id == category.CategoryId)
+            if (id == category.CategoryId)
             {
                 var editCategory = _mapper.Map<Category>(category);
                 editCategory.ModifiedDate = DateTime.Now;

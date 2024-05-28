@@ -10,7 +10,7 @@
         /// <summary>
         /// Tên thương hiệu
         /// </summary>
-        public string BrandName { get; set; }
+        public string BrandName { get; set; } = string.Empty;
 
         #region Relationship with Product
         /// <summary>

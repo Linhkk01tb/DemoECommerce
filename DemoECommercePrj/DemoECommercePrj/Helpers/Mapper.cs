@@ -10,6 +10,7 @@ namespace DemoECommercePrj.Helpers
         public Mapper() {
         
             CreateMap<Category, CategoryDTO>().ReverseMap();
+            CreateMap<Brand, BrandDTO>().ReverseMap();
             CreateMap<Product, ProductDTO>().ReverseMap();
         }
     }
