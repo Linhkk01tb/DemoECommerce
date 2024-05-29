@@ -137,3 +137,4 @@ E:\webbanhang\DemoECommerce\DemoECommercePrj\DemoECommercePrj\obj\Debug\net8.0\D
 E:\webbanhang\DemoECommerce\DemoECommercePrj\DemoECommercePrj\obj\Debug\net8.0\ref\DemoECommercePrj.dll
 E:\webbanhang\DemoECommerce\DemoECommercePrj\DemoECommercePrj\bin\Debug\net8.0\AutoMapper.dll
 E:\webbanhang\DemoECommerce\DemoECommercePrj\DemoECommercePrj\bin\Debug\net8.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
+E:\webbanhang\DemoECommerce\DemoECommercePrj\DemoECommercePrj\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll

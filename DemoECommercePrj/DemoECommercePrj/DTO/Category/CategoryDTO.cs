@@ -1,6 +1,6 @@
 ﻿using DemoECommercePrj.Models;
 
-namespace DemoECommercePrj.DTO
+namespace DemoECommercePrj.DTO.Category
 {
     public class CategoryDTO : CommonDate
     {
@@ -12,6 +12,6 @@ namespace DemoECommercePrj.DTO
         /// <summary>
         /// Tên loại
         /// </summary>
-        public string CategoryName { get; set; }
+        public string CategoryName { get; set; } = string.Empty;
     }
 }

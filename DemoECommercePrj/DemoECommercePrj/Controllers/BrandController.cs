@@ -1,7 +1,9 @@
-﻿using DemoECommercePrj.DTO;
+﻿using DemoECommercePrj.Data;
+using DemoECommercePrj.DTO.Brand;
 using DemoECommercePrj.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 
 namespace DemoECommercePrj.Controllers
@@ -23,11 +25,11 @@ namespace DemoECommercePrj.Controllers
             try
             {
                 var brands = await _brandRepository.GetAllBrandAsync();
-                return Ok(brands);
+                return StatusCode(StatusCodes.Status200OK, brands);
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return StatusCode(StatusCodes.Status400BadRequest, ex);
             }
         }
 
@@ -39,46 +41,49 @@ namespace DemoECommercePrj.Controllers
                 var brandById = await _brandRepository.GetBrandByIdAsync(id);
                 if (brandById == null)
                 {
-                    return NotFound();
+                    return StatusCode(StatusCodes.Status404NotFound);
                 }
-                return Ok(brandById);
+                return StatusCode(StatusCodes.Status200OK, brandById);
             }
-            catch
+            catch (Exception ex)
             {
-                return BadRequest();
+                return StatusCode(StatusCodes.Status400BadRequest, ex);
             }
         }
         [HttpPost]
-        public async Task<IActionResult> AddBrand(BrandDTO brandDTO)
+        public async Task<IActionResult> AddBrand(CreateBrandDTO brandDTO)
         {
             try
             {
                 var newBrand = await _brandRepository.AddBrandAsync(brandDTO);
-                var brandById = await _brandRepository.GetBrandByIdAsync(newBrand);
                 return StatusCode(StatusCodes.Status201Created, new
                 {
                     Success = true,
-                    brandById
+                    newBrand
                 });
             }
-            catch
+            catch (Exception ex)
             {
-                return BadRequest();
+                return StatusCode(StatusCodes.Status400BadRequest, ex);
             }
         }
 
         [HttpPut("{id}")]
 
-        public async Task<IActionResult> EditBrand(int id, BrandDTO brandDTO)
+        public async Task<IActionResult> EditBrand(int id, UpdateBrandDTO brandDTO)
         {
             try
             {
-                await _brandRepository.EditBrandAsync(id, brandDTO);
-                return NoContent();
+                var editBrand = await _brandRepository.EditBrandAsync(id, brandDTO);
+                return StatusCode(StatusCodes.Status200OK, new
+                {
+                    Success = true,
+                    editBrand
+                });
             }
-            catch
+            catch (Exception ex)
             {
-                return BadRequest();
+                return StatusCode(StatusCodes.Status400BadRequest, ex);
             }
         }
 
@@ -88,11 +93,11 @@ namespace DemoECommercePrj.Controllers
             try
             {
                 await _brandRepository.DeleteBrandAsync(id);
-                return NoContent();
+                return StatusCode(StatusCodes.Status204NoContent);
             }
-            catch
+            catch (Exception ex)
             {
-                return BadRequest();
+                return StatusCode(StatusCodes.Status400BadRequest, ex);
             }
         }
     }

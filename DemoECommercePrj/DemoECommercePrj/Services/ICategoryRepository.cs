@@ -1,4 +1,5 @@
-﻿using DemoECommercePrj.DTO;
+﻿using DemoECommercePrj.DTO.Brand;
+using DemoECommercePrj.DTO.Category;
 using DemoECommercePrj.Models;
 
 namespace DemoECommercePrj.Services
@@ -7,11 +8,11 @@ namespace DemoECommercePrj.Services
     {
         public Task<IEnumerable<CategoryDTO>> GetAllCategoriesAsync();
 
-        public Task<CategoryDTO> GetCategoryByIdAsync(int id);
+        public Task<CategoryDTO?> GetCategoryByIdAsync(int id);
 
-        public Task<int> AddCategoryAsync(CategoryDTO category);
+        public Task<CategoryDTO> AddCategoryAsync(CreateCategoryDTO category);
 
-        public Task EditCategoryAsync(CategoryDTO category, int id);
+        public Task<CategoryDTO?> EditCategoryAsync(int id, UpdateCategoryDTO category);
 
         public Task DeleteCategoryAsync(int id);
     }

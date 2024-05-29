@@ -1,4 +1,4 @@
-﻿using DemoECommercePrj.DTO;
+﻿using DemoECommercePrj.DTO.Product;
 
 namespace DemoECommercePrj.Services
 {

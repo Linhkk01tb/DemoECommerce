@@ -1,4 +1,4 @@
-﻿using DemoECommercePrj.DTO;
+﻿using DemoECommercePrj.DTO.Product;
 using DemoECommercePrj.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

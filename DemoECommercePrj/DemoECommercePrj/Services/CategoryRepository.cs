@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using DemoECommercePrj.Data;
-using DemoECommercePrj.DTO;
+using DemoECommercePrj.DTO.Brand;
+using DemoECommercePrj.DTO.Category;
 using DemoECommercePrj.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,14 +18,14 @@ namespace DemoECommercePrj.Services
             _mapper = mapper;
         }
 
-        public async Task<int> AddCategoryAsync(CategoryDTO category)
+        public async Task<CategoryDTO> AddCategoryAsync(CreateCategoryDTO category)
         {
             var newCategory = _mapper.Map<Category>(category);
-            category.CreatedDate = DateTime.Now;
-            category.ModifiedDate = DateTime.Now;
+            category.CreatedDate = DateTime.UtcNow.ToLocalTime();
+            category.ModifiedDate = DateTime.UtcNow.ToLocalTime();
             _context.Categories.Add(newCategory);
             await _context.SaveChangesAsync();
-            return newCategory.CategoryId;
+            return _mapper.Map<CategoryDTO>(newCategory);
         }
 
         public async Task DeleteCategoryAsync(int id)
@@ -37,15 +38,18 @@ namespace DemoECommercePrj.Services
             }
         }
 
-        public async Task EditCategoryAsync(CategoryDTO category, int id)
+        public async Task<CategoryDTO?> EditCategoryAsync(int id, UpdateCategoryDTO categoryDTO)
         {
-            if (id == category.CategoryId)
+            var editCategory = await _context.Categories!.FirstOrDefaultAsync(ct =>ct.CategoryId ==id);
+            if (editCategory != null)
             {
-                var editCategory = _mapper.Map<Category>(category);
-                editCategory.ModifiedDate = DateTime.Now;
+                editCategory.CategoryName = categoryDTO.CategoryName;
+                editCategory.ModifiedDate = DateTime.UtcNow.ToLocalTime();
                 _context.Categories.Update(editCategory);
                 await _context.SaveChangesAsync();
+                return _mapper.Map<CategoryDTO>(editCategory);
             }
+            return null;
         }
 
         public async Task<IEnumerable<CategoryDTO>> GetAllCategoriesAsync()
@@ -55,9 +59,13 @@ namespace DemoECommercePrj.Services
             return _mapper.Map<IEnumerable<CategoryDTO>>(categories);
         }
 
-        public async Task<CategoryDTO> GetCategoryByIdAsync(int id)
+        public async Task<CategoryDTO?> GetCategoryByIdAsync(int id)
         {
             var categoryById = await _context.Categories!.FindAsync(id);
+            if(categoryById == null)
+            {
+                return null;
+            }
             return _mapper.Map<CategoryDTO>(categoryById);
         }
     }

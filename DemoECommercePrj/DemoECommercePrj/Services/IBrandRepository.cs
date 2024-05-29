@@ -1,4 +1,4 @@
-﻿using DemoECommercePrj.DTO;
+﻿using DemoECommercePrj.DTO.Brand;
 
 namespace DemoECommercePrj.Services
 {
@@ -6,11 +6,11 @@ namespace DemoECommercePrj.Services
     {
         public Task<IEnumerable<BrandDTO>> GetAllBrandAsync();
 
-        public Task<BrandDTO> GetBrandByIdAsync(int id);
+        public Task<BrandDTO?> GetBrandByIdAsync(int id);
 
-        public Task<int> AddBrandAsync(BrandDTO brandDTO);
+        public Task<BrandDTO> AddBrandAsync(CreateBrandDTO brandDTO);
 
-        public Task EditBrandAsync(int id, BrandDTO brandDTO);
+        public Task<BrandDTO?> EditBrandAsync(int id, UpdateBrandDTO brandDTO);
 
         public Task DeleteBrandAsync(int id);
     }

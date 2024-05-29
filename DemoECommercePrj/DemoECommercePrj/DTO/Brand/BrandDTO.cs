@@ -1,6 +1,6 @@
 ﻿using DemoECommercePrj.Models;
 
-namespace DemoECommercePrj.DTO
+namespace DemoECommercePrj.DTO.Brand
 {
     public class BrandDTO : CommonDate
     {

@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using DemoECommercePrj.Data;
-using DemoECommercePrj.DTO;
+using DemoECommercePrj.DTO.Product;
 using DemoECommercePrj.Models;
 using Microsoft.EntityFrameworkCore;
 

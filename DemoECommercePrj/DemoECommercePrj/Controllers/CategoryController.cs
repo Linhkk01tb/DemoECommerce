@@ -1,5 +1,7 @@
 ﻿using DemoECommercePrj.Data;
-using DemoECommercePrj.DTO;
+using DemoECommercePrj.DTO.Brand;
+using DemoECommercePrj.DTO.Category;
+using DemoECommercePrj.Models;
 using DemoECommercePrj.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -29,13 +31,13 @@ namespace DemoECommercePrj.Controllers
                 var categories = await _categoryRepository.GetAllCategoriesAsync();
                 if (categories == null)
                 {
-                    return NotFound();
+                    return StatusCode(StatusCodes.Status404NotFound);
                 }
-                return Ok(categories);
+                return StatusCode(StatusCodes.Status200OK,categories);
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
             }
         }
 
@@ -52,9 +54,9 @@ namespace DemoECommercePrj.Controllers
                 var category = await _categoryRepository.GetCategoryByIdAsync(id);
                 if (category == null)
                 {
-                    return NotFound();
+                    return StatusCode(StatusCodes.Status404NotFound);
                 }
-                return Ok(category);
+                return StatusCode(StatusCodes.Status200OK, category);
             }
             catch (Exception ex)
             {
@@ -65,25 +67,24 @@ namespace DemoECommercePrj.Controllers
         /// <summary>
         /// Thêm 1 category vào danh sách
         /// </summary>
-        /// <param name="categoryVM"></param>
+        /// <param name="categoryDTO"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> AddCategory(CategoryDTO categoryVM)
+        public async Task<IActionResult> AddCategory(CreateCategoryDTO categoryDTO)
         {
             try
             {
-                var newCategory = await _categoryRepository.AddCategoryAsync(categoryVM);
-                var category = await _categoryRepository.GetCategoryByIdAsync(newCategory);
+                var newCategory = await _categoryRepository.AddCategoryAsync(categoryDTO);
                 return StatusCode(StatusCodes.Status201Created, new
                 {
                     Success = true,
-                    category
+                    newCategory
                 });
 
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
             }
 
         }
@@ -91,23 +92,24 @@ namespace DemoECommercePrj.Controllers
         /// <summary>
         /// Chỉnh sửa thông tin của 1 category có id tương ứng với id truyền vào
         /// </summary>
-        /// <param name="categoryVM"></param>
+        /// <param name="categoryDTO"></param>
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpPut("{id}")]
-        public async Task<IActionResult> EditCategory(CategoryDTO categoryVM, int id)
+        public async Task<IActionResult> EditCategory(int id, UpdateCategoryDTO categoryDTO)
         {
             try
             {
-                await _categoryRepository.EditCategoryAsync(categoryVM, id);
+                var editCategory = await _categoryRepository.EditCategoryAsync(id, categoryDTO);
                 return StatusCode(StatusCodes.Status200OK, new
                 {
-                    Success = true
+                    Success = true,
+                    editCategory
                 });
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
             }
         }
 
@@ -122,11 +124,11 @@ namespace DemoECommercePrj.Controllers
             try
             {
                 await _categoryRepository.DeleteCategoryAsync(id);
-                return StatusCode(StatusCodes.Status200OK);
+                return StatusCode(StatusCodes.Status204NoContent);
             }
-            catch
+            catch(Exception ex)
             {
-                return BadRequest();
+                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
             }
         }
     }

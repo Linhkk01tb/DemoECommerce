@@ -1,8 +1,8 @@
 ﻿using DemoECommercePrj.Models;
 
-namespace DemoECommercePrj.DTO
+namespace DemoECommercePrj.DTO.Product
 {
-    public class ProductDTO :CommonDate
+    public class ProductDTO : CommonDate
     {
         /// <summary>
         /// Mã sản phẩm

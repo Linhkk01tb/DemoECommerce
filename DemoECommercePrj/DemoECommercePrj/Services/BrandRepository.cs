@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using DemoECommercePrj.Data;
 using DemoECommercePrj.DTO;
+using DemoECommercePrj.DTO.Brand;
 using DemoECommercePrj.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,33 +17,40 @@ namespace DemoECommercePrj.Services
             _context = context;
             _mapper = mapper;
         }
-        public async Task<int> AddBrandAsync(BrandDTO brandDTO)
+        public async Task<BrandDTO> AddBrandAsync(CreateBrandDTO brandDTO)
         {
             var newBrand = _mapper.Map<Brand>(brandDTO);
-            newBrand.CreatedDate = DateTime.Now;
-            newBrand.ModifiedDate = DateTime.Now;
-            _context.Brands.Add(newBrand); 
+            newBrand.CreatedDate = DateTime.Now.ToLocalTime();
+            newBrand.ModifiedDate = DateTime.Now.ToLocalTime();
+            _context.Brands.Add(newBrand);
             await _context.SaveChangesAsync();
-            return newBrand.BrandId;
+            return _mapper.Map<BrandDTO>(newBrand);
         }
 
         public async Task DeleteBrandAsync(int id)
         {
-            var deleteBrand = await _context.Brands!.SingleOrDefaultAsync(bd=>bd.BrandId==id);
-            _context.Brands.Remove(deleteBrand);
-            await _context.SaveChangesAsync();
-        }
-
-        public async Task EditBrandAsync(int id, BrandDTO brandDTO)
-        {
-            if(id == brandDTO.BrandId)
+            var deleteBrand = await _context.Brands!.SingleOrDefaultAsync(bd => bd.BrandId == id);
+            if (deleteBrand != null)
             {
-                var editBrand = _mapper.Map<Brand>(brandDTO);
-                editBrand.ModifiedDate = DateTime.Now;
-                _context.Brands.Update(editBrand);
+                _context.Brands.Remove(deleteBrand);
                 await _context.SaveChangesAsync();
             }
-            
+
+        }
+
+        public async Task<BrandDTO?> EditBrandAsync(int id, UpdateBrandDTO brandDTO)
+        {
+            var editBrand = await _context.Brands!.FindAsync(id);
+            if (editBrand != null)
+            {
+                editBrand.BrandName = brandDTO.BrandName;
+                editBrand.ModifiedDate = DateTime.Now.ToLocalTime();
+                _context.Brands.Update(editBrand);
+                await _context.SaveChangesAsync();
+                return _mapper.Map<BrandDTO>(editBrand);
+            }
+            return null;
+
         }
 
         public async Task<IEnumerable<BrandDTO>> GetAllBrandAsync()
@@ -51,7 +59,7 @@ namespace DemoECommercePrj.Services
             return _mapper.Map<IEnumerable<BrandDTO>>(brands);
         }
 
-        public async Task<BrandDTO> GetBrandByIdAsync(int id)
+        public async Task<BrandDTO?> GetBrandByIdAsync(int id)
         {
             var brandById = await _context.Brands!.FindAsync(id);
             return _mapper.Map<BrandDTO>(brandById);
