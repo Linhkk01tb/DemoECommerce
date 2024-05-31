@@ -27,14 +27,16 @@ namespace DemoECommercePrj.Services
             return _mapper.Map<BrandDTO>(newBrand);
         }
 
-        public async Task DeleteBrandAsync(int id)
+        public async Task<BrandDTO?> DeleteBrandAsync(int id)
         {
             var deleteBrand = await _context.Brands!.SingleOrDefaultAsync(bd => bd.BrandId == id);
             if (deleteBrand != null)
             {
                 _context.Brands.Remove(deleteBrand);
                 await _context.SaveChangesAsync();
+                return  _mapper.Map<BrandDTO>(deleteBrand);
             }
+            return null;
 
         }
 

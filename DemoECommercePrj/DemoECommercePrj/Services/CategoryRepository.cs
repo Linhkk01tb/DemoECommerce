@@ -28,14 +28,16 @@ namespace DemoECommercePrj.Services
             return _mapper.Map<CategoryDTO>(newCategory);
         }
 
-         public async Task DeleteCategoryAsync(int id)
+         public async Task<CategoryDTO?> DeleteCategoryAsync(int id)
         {
             var deleteCategory = await _context.Categories!.SingleOrDefaultAsync(ct => ct.CategoryId == id);
             if (deleteCategory != null)
             {
                 _context.Categories.Remove(deleteCategory);
                 await _context.SaveChangesAsync();
+                return _mapper.Map<CategoryDTO?>(deleteCategory);
             }
+            return null;
         }
 
         public async Task<CategoryDTO?> EditCategoryAsync(int id, UpdateCategoryDTO categoryDTO)

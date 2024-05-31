@@ -12,7 +12,7 @@ namespace DemoECommercePrj.Services
 
         public Task<BrandDTO?> EditBrandAsync(int id, UpdateBrandDTO brandDTO);
 
-        public Task DeleteBrandAsync(int id);
+        public Task<BrandDTO?> DeleteBrandAsync(int id);
 
         public Task<bool> HasBrandAsync(int id);
     }

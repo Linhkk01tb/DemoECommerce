@@ -14,7 +14,7 @@ namespace DemoECommercePrj.Services
 
         public Task<CategoryDTO?> EditCategoryAsync(int id, UpdateCategoryDTO category);
 
-        public Task DeleteCategoryAsync(int id);
+        public Task<CategoryDTO?> DeleteCategoryAsync(int id);
 
         public Task<bool> HasCategoryAsync(int id);
     }

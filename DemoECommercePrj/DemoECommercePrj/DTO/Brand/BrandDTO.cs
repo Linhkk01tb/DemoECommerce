@@ -1,4 +1,5 @@
-﻿using DemoECommercePrj.Models;
+﻿using DemoECommercePrj.DTO.Product;
+using DemoECommercePrj.Models;
 
 namespace DemoECommercePrj.DTO.Brand
 {
@@ -14,6 +15,7 @@ namespace DemoECommercePrj.DTO.Brand
         /// </summary>
         public string BrandName { get; set; }
 
+        public ICollection<ProductDTO> Products { get; set; }
     }
 
 }

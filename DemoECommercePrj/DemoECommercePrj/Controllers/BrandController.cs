@@ -58,7 +58,7 @@ namespace DemoECommercePrj.Controllers
                 var newBrand = await _brandRepository.AddBrandAsync(brandDTO);
                 return StatusCode(StatusCodes.Status201Created, new
                 {
-                    Success = true,
+                    IsCreated = true,
                     newBrand
                 });
             }
@@ -77,7 +77,7 @@ namespace DemoECommercePrj.Controllers
                 var editBrand = await _brandRepository.EditBrandAsync(id, brandDTO);
                 return StatusCode(StatusCodes.Status200OK, new
                 {
-                    Success = true,
+                    IsUpdated = true,
                     editBrand
                 });
             }
@@ -92,8 +92,16 @@ namespace DemoECommercePrj.Controllers
         {
             try
             {
-                await _brandRepository.DeleteBrandAsync(id);
-                return StatusCode(StatusCodes.Status204NoContent);
+                var deleteBrand = await _brandRepository.DeleteBrandAsync(id);
+                if(deleteBrand == null)
+                {
+                    return StatusCode(StatusCodes.Status404NotFound);
+                }
+                return StatusCode(StatusCodes.Status200OK, new
+                {
+                    IsDeleted = true,
+                    deleteBrand
+                });
             }
             catch (Exception ex)
             {

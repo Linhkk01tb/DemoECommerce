@@ -63,7 +63,7 @@ namespace DemoECommercePrj.Controllers
         {
             try
             {
-                if(!await _categoryRepository.HasCategoryAsync(categoryId) || !await _brandRepository.HasBrandAsync(brandId))
+                if (!await _categoryRepository.HasCategoryAsync(categoryId) || !await _brandRepository.HasBrandAsync(brandId))
                 {
                     return StatusCode(StatusCodes.Status400BadRequest, "Category or Brand does not exist!");
                 }
@@ -71,25 +71,30 @@ namespace DemoECommercePrj.Controllers
                 var productById = await _productRepository.AddProductAsync(newProduct);
                 return StatusCode(StatusCodes.Status200OK, new
                 {
-                    Success = true,
+                    IsCreated = true,
                     productById
                 });
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
             }
         }
         [HttpPut("{id}")]
 
-        public async Task<IActionResult> EditProduct(Guid id, ProductDTO productDTO)
+        public async Task<IActionResult> EditProduct(Guid id, UpdateProductDTO productDTO)
         {
             try
             {
-                await _productRepository.EditProductAsync(id, productDTO);
-                return StatusCode(StatusCodes.Status200OK);
+
+                var editProduct = await _productRepository.EditProductAsync(id, productDTO.ToUpdateProduct());
+                return StatusCode(StatusCodes.Status200OK, new
+                {
+                    IsUpdated = true,
+                    editProduct
+                });
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
             }
@@ -100,10 +105,18 @@ namespace DemoECommercePrj.Controllers
         {
             try
             {
-                await _productRepository.DeleteProductAsync(id);
-                return StatusCode(StatusCodes.Status204NoContent);
+                var deleteProduct = await _productRepository.DeleteProductAsync(id);
+                if (deleteProduct == null)
+                {
+                    return StatusCode(StatusCodes.Status404NotFound);
+                }
+                return StatusCode(StatusCodes.Status200OK, new
+                {
+                    IsDeleted = true,
+                    deleteProduct
+                });
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
             }

@@ -27,25 +27,35 @@ namespace DemoECommercePrj.Services
 
         }
 
-        public async Task DeleteProductAsync(Guid id)
+        public async Task<ProductDTO?> DeleteProductAsync(Guid id)
         {
             var deleteProduct = await _context.Products!.SingleOrDefaultAsync(pd => pd.ProductId == id);
             if (deleteProduct != null)
             {
                 _context.Products.Remove(deleteProduct);
                 await _context.SaveChangesAsync();
+                return _mapper.Map<ProductDTO>(deleteProduct);
             }
+            return null;
         }
 
-        public async Task EditProductAsync(Guid id, ProductDTO productDTO)
+        public async Task<ProductDTO?> EditProductAsync(Guid id, Product productDTO)
         {
-            if (id == productDTO.ProductId)
+            var editProduct = await _context.Products!.FindAsync(id);
+            if (editProduct == null)
             {
-                var editProduct = _mapper.Map<Product>(productDTO);
-                editProduct.ModifiedDate = DateTime.Now;
-                _context.Products.Update(editProduct);
-                await _context.SaveChangesAsync();
+                return null;
             }
+            editProduct.ProductName = productDTO.ProductName;
+            editProduct.ProductDescription = productDTO.ProductDescription;
+            editProduct.ProductQuantiy = productDTO.ProductQuantiy;
+            editProduct.ProductPrice = productDTO.ProductPrice;
+            editProduct.ModifiedDate = DateTime.UtcNow.ToLocalTime();
+            _context.Products.Update(editProduct);
+            await _context.SaveChangesAsync();
+            return _mapper.Map<ProductDTO>(editProduct);
+
+
         }
 
         public async Task<IEnumerable<ProductDTO>> GetAllProductsAsync()
@@ -54,7 +64,7 @@ namespace DemoECommercePrj.Services
             return _mapper.Map<IEnumerable<ProductDTO>>(products);
         }
 
-        public async Task<ProductDTO> GetProductByIdAsync(Guid id)
+        public async Task<ProductDTO?> GetProductByIdAsync(Guid id)
         {
             var productById = await _context.Products!.FindAsync(id);
             return _mapper.Map<ProductDTO>(productById);

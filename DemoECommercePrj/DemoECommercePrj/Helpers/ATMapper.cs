@@ -18,7 +18,7 @@ namespace DemoECommercePrj.Helpers
             #endregion
 
             #region AutoMap Brand
-            CreateMap<Brand, BrandDTO>().ReverseMap();
+            CreateMap<Brand, BrandDTO>().ReverseMap().ForMember(bd => bd.Products, bd => bd.MapFrom(bdd => (ProductDTO)bdd.Products));
             CreateMap<Brand, CreateBrandDTO>().ReverseMap();
             #endregion
 

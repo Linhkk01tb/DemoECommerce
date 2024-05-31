@@ -77,7 +77,7 @@ namespace DemoECommercePrj.Controllers
                 var newCategory = await _categoryRepository.AddCategoryAsync(categoryDTO);
                 return StatusCode(StatusCodes.Status201Created, new
                 {
-                    Success = true,
+                    IsCreated = true,
                     newCategory
                 });
 
@@ -103,7 +103,7 @@ namespace DemoECommercePrj.Controllers
                 var editCategory = await _categoryRepository.EditCategoryAsync(id, categoryDTO);
                 return StatusCode(StatusCodes.Status200OK, new
                 {
-                    Success = true,
+                    IsUpdated = true,
                     editCategory
                 });
             }
@@ -123,8 +123,16 @@ namespace DemoECommercePrj.Controllers
         {
             try
             {
-                await _categoryRepository.DeleteCategoryAsync(id);
-                return StatusCode(StatusCodes.Status204NoContent);
+                var deleteCategory = await _categoryRepository.DeleteCategoryAsync(id);
+                if(deleteCategory == null)
+                {
+                    return StatusCode(StatusCodes.Status404NotFound);
+                }
+                return StatusCode(StatusCodes.Status200OK, new
+                {
+                    IsDeleted = true,
+                    deleteCategory
+                });
             }
             catch(Exception ex)
             {
