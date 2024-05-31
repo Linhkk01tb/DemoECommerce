@@ -1,4 +1,5 @@
-﻿using DemoECommercePrj.Models;
+﻿using DemoECommercePrj.DTO.Product;
+using DemoECommercePrj.Models;
 
 namespace DemoECommercePrj.DTO.Category
 {
@@ -13,5 +14,7 @@ namespace DemoECommercePrj.DTO.Category
         /// Tên loại
         /// </summary>
         public string CategoryName { get; set; } = string.Empty;
+
+        public ICollection<ProductDTO> Products { get; set; }
     }
 }

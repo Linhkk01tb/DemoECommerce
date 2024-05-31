@@ -16,14 +16,14 @@ namespace DemoECommercePrj.Services
             _context = context;
             _mapper = mapper;
         }
-        public async Task<Guid> AddProductAsync(ProductDTO productDTO)
+        public async Task<ProductDTO> AddProductAsync(Product product)
         {
-            var newProduct = _mapper.Map<Product>(productDTO);
-            newProduct.CreatedDate = DateTime.Now;
-            newProduct.ModifiedDate = DateTime.Now;
-            _context.Products.Add(newProduct);
+
+            product.CreatedDate = DateTime.UtcNow.ToLocalTime();
+            product.ModifiedDate = DateTime.UtcNow.ToLocalTime();
+            _context.Products.Add(product);
             await _context.SaveChangesAsync();
-            return newProduct.ProductId;
+            return _mapper.Map<ProductDTO>(product);
 
         }
 

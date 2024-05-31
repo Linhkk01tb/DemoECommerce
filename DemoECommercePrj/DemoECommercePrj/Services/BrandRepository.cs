@@ -55,14 +55,19 @@ namespace DemoECommercePrj.Services
 
         public async Task<IEnumerable<BrandDTO>> GetAllBrandAsync()
         {
-            var brands = await _context.Brands!.ToListAsync();
+            var brands = await _context.Brands!.Include(ct => ct.Products.ToList().OrderBy(pd => pd.ProductId)).ToListAsync();
             return _mapper.Map<IEnumerable<BrandDTO>>(brands);
         }
 
         public async Task<BrandDTO?> GetBrandByIdAsync(int id)
         {
-            var brandById = await _context.Brands!.FindAsync(id);
+            var brandById = await _context.Brands!.Include(bd => bd.Products.ToList().OrderBy(pd => pd.ProductId)).FirstOrDefaultAsync(bd => bd.BrandId == id);
             return _mapper.Map<BrandDTO>(brandById);
+        }
+
+        public Task<bool> HasBrandAsync(int id)
+        {
+            return _context.Brands!.AnyAsync(bd => bd.BrandId == id);
         }
     }
 }

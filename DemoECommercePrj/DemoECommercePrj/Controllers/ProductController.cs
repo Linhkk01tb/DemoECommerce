@@ -1,4 +1,5 @@
 ﻿using DemoECommercePrj.DTO.Product;
+using DemoECommercePrj.Helpers;
 using DemoECommercePrj.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -10,10 +11,14 @@ namespace DemoECommercePrj.Controllers
     public class ProductController : ControllerBase
     {
         private readonly IProductRepository _productRepository;
+        private readonly ICategoryRepository _categoryRepository;
+        private readonly IBrandRepository _brandRepository;
 
-        public ProductController(IProductRepository productRepository)
+        public ProductController(IProductRepository productRepository, ICategoryRepository categoryRepository, IBrandRepository brandRepository)
         {
             _productRepository = productRepository;
+            _categoryRepository = categoryRepository;
+            _brandRepository = brandRepository;
         }
 
         [HttpGet]
@@ -24,13 +29,13 @@ namespace DemoECommercePrj.Controllers
                 var products = await _productRepository.GetAllProductsAsync();
                 if (products == null)
                 {
-                    return NotFound();
+                    return StatusCode(StatusCodes.Status404NotFound);
                 }
-                return Ok(products);
+                return StatusCode(StatusCodes.Status200OK, products);
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
             }
         }
 
@@ -42,33 +47,37 @@ namespace DemoECommercePrj.Controllers
                 var productById = await _productRepository.GetProductByIdAsync(id);
                 if (productById == null)
                 {
-                    return NotFound();
+                    return StatusCode(StatusCodes.Status404NotFound);
                 }
-                return Ok(productById);
+                return StatusCode(StatusCodes.Status200OK, productById);
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
             }
         }
 
 
         [HttpPost]
-        public async Task<IActionResult> AddProduct(ProductDTO productDTO)
+        public async Task<IActionResult> AddProduct(int categoryId, int brandId, CreateProductDTO productDTO)
         {
             try
             {
-                var newProduct = await _productRepository.AddProductAsync(productDTO);
-                var productById = await _productRepository.GetProductByIdAsync(newProduct);
-                return Ok(new
+                if(!await _categoryRepository.HasCategoryAsync(categoryId) || !await _brandRepository.HasBrandAsync(brandId))
+                {
+                    return StatusCode(StatusCodes.Status400BadRequest, "Category or Brand does not exist!");
+                }
+                var newProduct = productDTO.ToCreateProduct(categoryId, brandId);
+                var productById = await _productRepository.AddProductAsync(newProduct);
+                return StatusCode(StatusCodes.Status200OK, new
                 {
                     Success = true,
                     productById
                 });
             }
-            catch
+            catch(Exception ex)
             {
-                return BadRequest();
+                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
             }
         }
         [HttpPut("{id}")]
@@ -78,11 +87,11 @@ namespace DemoECommercePrj.Controllers
             try
             {
                 await _productRepository.EditProductAsync(id, productDTO);
-                return NoContent();
+                return StatusCode(StatusCodes.Status200OK);
             }
-            catch
+            catch(Exception ex)
             {
-                return BadRequest();
+                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
             }
         }
 
@@ -92,11 +101,11 @@ namespace DemoECommercePrj.Controllers
             try
             {
                 await _productRepository.DeleteProductAsync(id);
-                return Ok();
+                return StatusCode(StatusCodes.Status204NoContent);
             }
-            catch
+            catch(Exception ex)
             {
-                return BadRequest();
+                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
             }
         }
     }

@@ -29,7 +29,7 @@ namespace DemoECommercePrj.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status400BadRequest, ex);
+                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
             }
         }
 
@@ -47,7 +47,7 @@ namespace DemoECommercePrj.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status400BadRequest, ex);
+                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
             }
         }
         [HttpPost]
@@ -64,7 +64,7 @@ namespace DemoECommercePrj.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status400BadRequest, ex);
+                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
             }
         }
 
@@ -83,7 +83,7 @@ namespace DemoECommercePrj.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status400BadRequest, ex);
+                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
             }
         }
 
@@ -97,7 +97,7 @@ namespace DemoECommercePrj.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status400BadRequest, ex);
+                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
             }
         }
     }

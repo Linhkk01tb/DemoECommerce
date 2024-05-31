@@ -2,13 +2,8 @@
 
 namespace DemoECommercePrj.DTO.Product
 {
-    public class ProductDTO : CommonDate
+    public class CreateProductDTO :CommonDate
     {
-        /// <summary>
-        /// Mã sản phẩm
-        /// </summary>
-        public Guid ProductId { get; set; }
-
         /// <summary>
         /// Tên sản phẩm
         /// </summary>
@@ -28,9 +23,5 @@ namespace DemoECommercePrj.DTO.Product
         /// Mô tả sản phẩm
         /// </summary>
         public string? ProductDescription { get; set; }
-
-        public int CategoryId { get; set; }
-
-        public int BrandId { get; set; }
     }
 }

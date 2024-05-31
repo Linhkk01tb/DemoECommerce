@@ -7,21 +7,22 @@ using System.Runtime;
 
 namespace DemoECommercePrj.Helpers
 {
-    public class Mapper : Profile
+    public class ATMapper : Profile
     {
-        public Mapper() {
+        public ATMapper() {
 
-            #region Map Category
-            CreateMap<Category, CategoryDTO>().ReverseMap();
+            #region AutoMap Category
+            //CreateMap<Category, CategoryDTO>().ReverseMap();
+            CreateMap<Category, CategoryDTO>().ReverseMap().ForMember(ct => ct.Products, ct => ct.MapFrom(ctd => (ProductDTO)ctd.Products));
             CreateMap<Category, CreateCategoryDTO>().ReverseMap();
             #endregion
 
-            #region Map Brand
+            #region AutoMap Brand
             CreateMap<Brand, BrandDTO>().ReverseMap();
             CreateMap<Brand, CreateBrandDTO>().ReverseMap();
             #endregion
 
-            #region Map Product
+            #region AutoMap Product
             CreateMap<Product, ProductDTO>().ReverseMap();
             #endregion
         }

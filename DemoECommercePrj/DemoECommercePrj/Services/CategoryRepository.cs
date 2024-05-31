@@ -28,7 +28,7 @@ namespace DemoECommercePrj.Services
             return _mapper.Map<CategoryDTO>(newCategory);
         }
 
-        public async Task DeleteCategoryAsync(int id)
+         public async Task DeleteCategoryAsync(int id)
         {
             var deleteCategory = await _context.Categories!.SingleOrDefaultAsync(ct => ct.CategoryId == id);
             if (deleteCategory != null)
@@ -40,7 +40,7 @@ namespace DemoECommercePrj.Services
 
         public async Task<CategoryDTO?> EditCategoryAsync(int id, UpdateCategoryDTO categoryDTO)
         {
-            var editCategory = await _context.Categories!.FirstOrDefaultAsync(ct =>ct.CategoryId ==id);
+            var editCategory = await _context.Categories!.FirstOrDefaultAsync(ct => ct.CategoryId == id);
             if (editCategory != null)
             {
                 editCategory.CategoryName = categoryDTO.CategoryName;
@@ -54,19 +54,25 @@ namespace DemoECommercePrj.Services
 
         public async Task<IEnumerable<CategoryDTO>> GetAllCategoriesAsync()
         {
-            var categories = await _context.Categories!.ToListAsync();
-
+            //Get category + Include list<Product>
+            var categories = await _context.Categories!.Include(ct => ct.Products.ToList().OrderBy(pd => pd.ProductId)).ToListAsync();
+            //var categories = await _context.Categories!.ToListAsync();
             return _mapper.Map<IEnumerable<CategoryDTO>>(categories);
         }
 
         public async Task<CategoryDTO?> GetCategoryByIdAsync(int id)
         {
-            var categoryById = await _context.Categories!.FindAsync(id);
-            if(categoryById == null)
+            var categoryById = await _context.Categories!.Include(ct => ct.Products.ToList().OrderBy(pd => pd.ProductId)).FirstOrDefaultAsync(ct=>ct.CategoryId == id);
+            if (categoryById == null)
             {
                 return null;
             }
             return _mapper.Map<CategoryDTO>(categoryById);
+        }
+
+        public Task<bool> HasCategoryAsync(int id)
+        {
+            return _context.Categories.AnyAsync(ct => ct.CategoryId == id);
         }
     }
 }
